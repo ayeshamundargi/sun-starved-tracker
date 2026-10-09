@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sun-Starved Tracker — Hackathon Presentation (5 Slides)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-dark: #0f172a;
+      --navy-medium: #1e293b;
+      --navy-light: #334155;
+      --green-primary: #15803d;
+      --green-emerald: #16a34a;
+      --green-light: #dcfce7;
+      --green-subtle: #f0fdf4;
+      --white: #ffffff;
+      --bg-page: #0b1120;
+      --bg-slide: #f8fafc;
+      --card-bg: #ffffff;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-light: #e2e8f0;
+      --border-accent: #bbf7d0;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      user-select: none;
+    }
+
+    /* Top Control Toolbar */
+    .toolbar {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      color: #e2e8f0;
+    }
+
+    .brand-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-tag span.leaf {
+      color: #4ade80;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn-action {
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid #334155;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      background: #334155;
+      border-color: #475569;
+      transform: translateY(-1px);
+    }
+
+    .btn-action.accent {
+      background: var(--green-primary);
+      border-color: var(--green-emerald);
+      color: white;
+    }
+
+    .btn-action.accent:hover {
+      background: var(--green-emerald);
+    }
+
+    /* Presentation Container (16:9 Aspect Ratio) */
+    .deck-container {
+      width: 100%;
+      max-width: 1100px;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-slide);
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Slides */
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 2.75rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(30px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      background: var(--bg-slide);
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+      z-index: 2;
+    }
+
+    /* Header Component */
+    .slide-badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 0.25rem 0.75rem;
+      background: var(--green-light);
+      color: var(--green-primary);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      border: 1px solid var(--border-accent);
+    }
+
+    .slide-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--navy-dark);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    /* Content Area */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Card Utilities */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* SLIDE 1 STYLES */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .hero-card {
+      background: white;
+      border: 1.5px solid var(--border-light);
+      border-left: 5px solid var(--green-primary);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+    }
+
+    .hero-card h3 {
+      font-size: 1.2rem;
+      color: var(--navy-dark);
+      margin-bottom: 0.6rem;
+      font-weight: 700;
+    }
+
+    .hero-card p {
+      font-size: 1rem;
+      color: var(--navy-medium);
+      line-height: 1.6;
+    }
+
+    .pillars-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    .pillar-pill {
+      background: #f1f5f9;
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+    }
+
+    /* SLIDE 2 STYLES */
+    .problem-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .problem-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.4rem;
+      border-top: 4px solid var(--green-primary);
+      box-shadow: var(--shadow-md);
+    }
+
+    .problem-card.solar {
+      border-top-color: var(--navy-dark);
+    }
+
+    .problem-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .problem-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .problem-card li {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--navy-medium);
+      position: relative;
+      padding-left: 1.25rem;
+    }
+
+    .problem-card li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: -1px;
+      font-size: 1.2rem;
+      color: var(--green-primary);
+    }
+
+    .problem-card.solar li::before {
+      color: var(--navy-dark);
+    }
+
+    .dilemma-bar {
+      margin-top: 1rem;
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 0.65rem 1rem;
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+      border: 1px solid var(--border-light);
+    }
+
+    /* SLIDE 3 STYLES */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+
+    .sol-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.15rem 1.25rem;
+      border: 1.5px solid var(--border-light);
+      transition: all 0.2s ease;
+    }
+
+    .sol-card.green-accent {
+      border-left: 4px solid var(--green-primary);
+    }
+
+    .sol-card.navy-accent {
+      border-left: 4px solid var(--navy-dark);
+    }
+
+    .sol-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin-bottom: 0.45rem;
+    }
+
+    .sol-card p {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--navy-medium);
+    }
+
+    /* SLIDE 4 STYLES (4 STEPS) */
+    .workflow-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      position: relative;
+    }
+
+    .step-box {
+      background: white;
+      border: 1.5px solid var(--border-light);
+      border-radius: 12px;
+      padding: 1.25rem 1rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .step-box.step-green {
+      border-top: 4px solid var(--green-primary);
+    }
+
+    .step-box.step-navy {
+      border-top: 4px solid var(--navy-dark);
+    }
+
+    .step-badge-mini {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--green-primary);
+      margin-bottom: 0.35rem;
+    }
+
+    .step-navy .step-badge-mini {
+      color: var(--navy-dark);
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--navy-dark);
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .step-desc {
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--navy-medium);
+    }
+
+    .step-arrow {
+      position: absolute;
+      right: -0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: var(--green-emerald);
+      font-weight: 800;
+      z-index: 5;
+    }
+
+    .loop-banner {
+      margin-top: 1.25rem;
+      background: var(--green-light);
+      border: 1px solid var(--border-accent);
+      border-radius: 10px;
+      padding: 0.65rem 1rem;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--green-primary);
+    }
+
+    /* SLIDE 5 STYLES */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .metric-card {
+      background: white;
+      border: 1.5px solid var(--border-light);
+      border-radius: 12px;
+      padding: 1.2rem;
+      text-align: left;
+    }
+
+    .metric-card.m-green {
+      border-left: 4px solid var(--green-primary);
+    }
+
+    .metric-card.m-navy {
+      border-left: 4px solid var(--navy-dark);
+    }
+
+    .metric-num {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--green-primary);
+      font-family: 'Space Grotesk', sans-serif;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .m-navy .metric-num {
+      color: var(--navy-dark);
+    }
+
+    .metric-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin-bottom: 0.35rem;
+    }
+
+    .metric-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .vision-card {
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .vision-card h4 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin-bottom: 0.4rem;
+    }
+
+    .vision-card p {
+      font-size: 0.82rem;
+      color: var(--navy-medium);
+      line-height: 1.45;
+    }
+
+    .thanks-callout {
+      background: var(--navy-dark);
+      color: white;
+      border-radius: 12px;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .thanks-text h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .thanks-text p {
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    .demo-pill-link {
+      background: var(--green-primary);
+      color: white;
+      text-decoration: none;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+
+    .demo-pill-link:hover {
+      background: var(--green-emerald);
+    }
+
+    /* Footer Navigation within Slide Container */
+    .slide-footer {
+      height: 48px;
+      border-top: 1px solid var(--border-light);
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      z-index: 10;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-nav {
+      background: #f1f5f9;
+      border: 1px solid var(--border-light);
+      color: var(--navy-dark);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .btn-nav:hover {
+      background: var(--green-primary);
+      color: white;
+      border-color: var(--green-primary);
+    }
+
+    .dots-indicator {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dot.active {
+      background: var(--green-primary);
+      width: 22px;
+      border-radius: 4px;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .toolbar, .slide-footer {
+        display: none !important;
+      }
+      .deck-container {
+        max-width: 100%;
+        box-shadow: none;
+        border: none;
+        aspect-ratio: auto;
+      }
+      .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        page-break-after: always;
+        height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Toolbar -->
+  <div class="toolbar">
+    <div class="brand-tag">
+      <span class="leaf">☀️🌱</span> Sun-Starved Tracker — Pitch Deck
+    </div>
+    <div class="toolbar-actions">
+      <a href="./Sun-Starved_Tracker_Presentation.pptx" download class="btn-action accent" title="Download PPTX File">
+        📥 Download .PPTX
+      </a>
+      <button onclick="window.print()" class="btn-action" title="Print or Save as PDF">
+        🖨️ Save PDF
+      </button>
+      <button id="btn-fullscreen" class="btn-action" title="Fullscreen Presentation Mode">
+        ⛶ Fullscreen
+      </button>
+      <a href="./index.html" class="btn-action" title="Open Live Dashboard">
+        🚀 Live Web App
+      </a>
+    </div>
+  </div>
+
+  <!-- 16:9 Presentation Deck -->
+  <div class="deck-container" id="presentationDeck">
+
+    <!-- SLIDE 1: INTRODUCTION -->
+    <section class="slide active" id="slide-1">
+      <div class="slide-badge">Smart Agriculture & Clean Energy</div>
+      <h1 class="slide-title">Sun-Starved Tracker</h1>
+      <p class="slide-subtitle">Intelligent Agri-Voltaics Optimizer • Dual-Harvest Innovation</p>
+
+      <div class="slide-body">
+        <div class="intro-grid">
+          <div class="hero-card">
+            <h3>Core Concept: Harmonizing Solar Energy & Crop Yields</h3>
+            <p>
+              Sun-Starved Tracker is an AI-powered IoT system designed to eliminate the conflict between solar power generation and crop photosynthesis. By dynamically tilting elevated solar panels according to real-time crop light saturation and weather forecasts, the system guarantees healthy crop growth beneath panels while maximizing clean electricity output.
+            </p>
+          </div>
+
+          <div class="pillars-bar">
+            <div class="pillar-pill">🌱 Photosynthesis-Aware</div>
+            <div class="pillar-pill">⚙️ Dual-Axis Kinematics</div>
+            <div class="pillar-pill">🔋 Smart Battery Storage</div>
+            <div class="pillar-pill">📱 Multi-Language (6 Tongues)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: THE PROBLEM -->
+    <section class="slide" id="slide-2">
+      <div class="slide-badge">The Challenge</div>
+      <h2 class="slide-title">The Conflict: Crop Sunlight vs. Solar Energy</h2>
+      <p class="slide-subtitle">Traditional static solar arrays create severe compromises on working farmland.</p>
+
+      <div class="slide-body">
+        <div class="problem-cols">
+          <!-- Crop Challenges -->
+          <div class="problem-card">
+            <h3 style="color: var(--green-primary);">🌱 Crop Sunlight Needs</h3>
+            <ul>
+              <li><strong>Sun-Starvation:</strong> Fixed solar arrays cast permanent shadows, depriving crops of essential PAR light.</li>
+              <li><strong>Stunted Yields:</strong> Up to 40% yield drop in high-light crops like tomatoes, maize, and chillies.</li>
+              <li><strong>Damp Microclimates:</strong> Trapped humidity beneath unmoving panels causes fungal disease and mildew.</li>
+              <li><strong>Farmer Hesitation:</strong> Landowners fear solar installations will compromise their food security.</li>
+            </ul>
+          </div>
+
+          <!-- Solar Challenges -->
+          <div class="problem-card solar">
+            <h3 style="color: var(--navy-dark);">☀️ Solar Energy Demands</h3>
+            <ul>
+              <li><strong>Sub-Optimal Angles:</strong> Fixed mounts capture peak irradiation for only a brief midday window (25% lost power).</li>
+              <li><strong>Weather Vulnerability:</strong> Heavy hailstorms and severe wind gusts crack static glass surfaces.</li>
+              <li><strong>Land Competition:</strong> Traditional solar farms lock up fertile agricultural soil for decades.</li>
+              <li><strong>Grid Curtailment:</strong> Inflexible generation without smart battery synchronization wastes clean energy.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="dilemma-bar">
+          💡 The Core Dilemma: Agriculture needs open sunlight. Solar needs full exposure. How do we achieve both?
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: THE SOLUTION -->
+    <section class="slide" id="slide-3">
+      <div class="slide-badge">Our Solution</div>
+      <h2 class="slide-title">Sun-Starved Tracker: 4 Core Pillars</h2>
+      <p class="slide-subtitle">An intelligent, closed-loop agrivoltaic management ecosystem built for farmers.</p>
+
+      <div class="slide-body">
+        <div class="solution-grid">
+          <div class="sol-card green-accent">
+            <h3>1. AI Crop Health & PAR Monitoring</h3>
+            <p>Monitors Photosynthetically Active Radiation (PAR), soil moisture, and crop canopy coverage. When crops are light-deficient, panels tilt away to allow filtered sunlight directly to root beds.</p>
+          </div>
+
+          <div class="sol-card navy-accent">
+            <h3>2. Dynamic Dual-Axis Kinematics</h3>
+            <p>Smart hydraulic linear actuators adjust panel tilt (0° to 75°) and compass azimuth. Maximizes clean kilowatt-hours when crops are saturated, and provides cooling shade during scorching heatwaves.</p>
+          </div>
+
+          <div class="sol-card navy-accent">
+            <h3>3. Smart Battery & Energy Optimizer</h3>
+            <p>Oversees dual LiFePO4 battery banks (SoC, cell health, charge cycles). Balances farm pump consumption, on-site storage, and profitable grid export without power interruptions.</p>
+          </div>
+
+          <div class="sol-card green-accent">
+            <h3>4. Automated Safety Stowing & Alerts</h3>
+            <p>Autonomous storm response: stows flat at 0° in high winds to reduce drag (-86%), angles at 30° during rain for guided water harvesting, and sends instant voice/SMS alerts in 6 languages.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: SYSTEM WORKING (4-STEP FLOW) -->
+    <section class="slide" id="slide-4">
+      <div class="slide-badge">System Workflow</div>
+      <h2 class="slide-title">Simple 4-Step Closed-Loop Flow</h2>
+      <p class="slide-subtitle">Automated sensing, AI intelligence, and precision mechanical actuation.</p>
+
+      <div class="slide-body">
+        <div class="workflow-row">
+          <!-- Step 1 -->
+          <div class="step-box step-green">
+            <div class="step-badge-mini">STEP 1</div>
+            <div class="step-title">📡 Sense</div>
+            <p class="step-desc">IoT ground & sky sensors measure soil moisture, PAR sunlight flux, temperature, humidity, and real-time weather forecasts.</p>
+            <div class="step-arrow">➔</div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-box step-navy">
+            <div class="step-badge-mini">STEP 2</div>
+            <div class="step-title">🧠 Analyze</div>
+            <p class="step-desc">AI Decision Engine calculates the trade-off curve between crop photosynthesis requirements and solar generation targets.</p>
+            <div class="step-arrow">➔</div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-box step-green">
+            <div class="step-badge-mini">STEP 3</div>
+            <div class="step-title">⚙️ Actuate</div>
+            <p class="step-desc">Motor actuators gently tilt elevated panels to the optimal angle (e.g., 15° morning boost, 35° solar track, or 0° storm stow).</p>
+            <div class="step-arrow">➔</div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step-box step-navy">
+            <div class="step-badge-mini">STEP 4</div>
+            <div class="step-title">⚖️ Balance</div>
+            <p class="step-desc">Crops receive necessary light to flourish, clean electricity is stored in farm batteries, and grid export is scheduled profitably.</p>
+          </div>
+        </div>
+
+        <div class="loop-banner">
+          ⚡ Fully Autonomous Closed Loop: Re-evaluates every 15 minutes without requiring farmer manual intervention.
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: IMPACT & FUTURE VISION -->
+    <section class="slide" id="slide-5">
+      <div class="slide-badge">Impact & Vision</div>
+      <h2 class="slide-title">Projected Impact & Future Roadmap</h2>
+      <p class="slide-subtitle">Delivering tangible financial and environmental returns for farming communities.</p>
+
+      <div class="slide-body">
+        <div class="metrics-bar">
+          <div class="metric-card m-green">
+            <div class="metric-num">+35%</div>
+            <div class="metric-label">Farmer Revenue</div>
+            <p class="metric-desc">Dual income streams: crop sales plus surplus solar electricity feed-in tariffs.</p>
+          </div>
+
+          <div class="metric-card m-navy">
+            <div class="metric-num">+40%</div>
+            <div class="metric-label">Water Savings</div>
+            <p class="metric-desc">Controlled canopy shade reduces soil evaporation and prevents heat scorch.</p>
+          </div>
+
+          <div class="metric-card m-green">
+            <div class="metric-num">100%</div>
+            <div class="metric-label">Storm Protection</div>
+            <p class="metric-desc">Autonomous stowing shields crops and solar panels from severe storm hail.</p>
+          </div>
+        </div>
+
+        <div class="vision-card">
+          <h4>🚀 Future Roadmap</h4>
+          <p>
+            • <strong>Multispectral Drone Scans:</strong> Real-time NDVI chlorophyll imaging for early pest detection.<br>
+            • <strong>Village Microgrids:</strong> Decentralized peer-to-peer battery energy sharing across farming clusters.
+          </p>
+        </div>
+
+        <div class="thanks-callout">
+          <div class="thanks-text">
+            <h3>Thank You! Questions & Live Demo</h3>
+            <p>Sun-Starved Tracker — Harmonizing Clean Energy & Food Security</p>
+          </div>
+          <a href="https://ayeshamundargi.github.io/sun-starved-tracker/" target="_blank" class="demo-pill-link">
+            Open Live Demo ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide Deck Footer Controls -->
+    <footer class="slide-footer">
+      <div id="slideCounter">Slide 1 of 5</div>
+      <div class="dots-indicator" id="dotsContainer">
+        <div class="dot active" onclick="goToSlide(0)"></div>
+        <div class="dot" onclick="goToSlide(1)"></div>
+        <div class="dot" onclick="goToSlide(2)"></div>
+        <div class="dot" onclick="goToSlide(3)"></div>
+        <div class="dot" onclick="goToSlide(4)"></div>
+      </div>
+      <div class="nav-controls">
+        <button class="btn-nav" id="btnPrev" onclick="prevSlide()" title="Previous Slide (Left Arrow)">◀</button>
+        <button class="btn-nav" id="btnNext" onclick="nextSlide()" title="Next Slide (Right Arrow or Space)">▶</button>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const counter = document.getElementById('slideCounter');
+    const totalSlides = slides.length;
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === currentSlide);
+      });
+      dots.forEach((d, idx) => {
+        d.classList.toggle('active', idx === currentSlide);
+      });
+      counter.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(idx) {
+      if (idx >= 0 && idx < totalSlides) {
+        currentSlide = idx;
+        updateSlide();
+      }
+    }
+
+    // Keyboard controls
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      }
+    });
+
+    // Fullscreen toggle
+    function toggleFullscreen() {
+      const container = document.getElementById('presentationDeck');
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(err => console.log(err));
+      } else {
+        document.exitFullscreen().catch(err => console.log(err));
+      }
+    }
+
+    document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+  </script>
+</body>
+</html>
