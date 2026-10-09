@@ -1,0 +1,77 @@
+/* ============================================================
+   FARM REPORT PRINT STYLESHEET
+   Optimized for physical printer output & PDF export
+   ============================================================ */
+
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+  }
+
+  .app-header,
+  .mobile-bottom-nav,
+  .desktop-nav,
+  .sync-banner,
+  .presentation-bar,
+  .btn,
+  .modal-close,
+  .toast-container,
+  .twin-controls-panel,
+  .time-control-strip {
+    display: none !important;
+  }
+
+  .main-wrapper {
+    display: block !important;
+  }
+
+  .content-area {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #CCCCCC !important;
+    page-break-inside: avoid;
+    margin-bottom: 15pt !important;
+    padding: 12pt !important;
+  }
+
+  .print-header {
+    border-bottom: 2px solid #123B2A;
+    padding-bottom: 10pt;
+    margin-bottom: 15pt;
+  }
+
+  .report-disclaimer {
+    border: 1px solid #D97706;
+    background: #FFFBEB !important;
+    color: #92400E !important;
+    padding: 8pt 10pt;
+    font-size: 9pt;
+    margin-top: 15pt;
+    page-break-inside: avoid;
+  }
+
+  .print-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10pt 0;
+  }
+
+  .print-table th,
+  .print-table td {
+    border: 1px solid #DDDDDD;
+    padding: 6pt 8pt;
+    text-align: left;
+    font-size: 10pt;
+  }
+
+  .print-table th {
+    background-color: #F1F5F9;
+    font-weight: bold;
+  }
+}

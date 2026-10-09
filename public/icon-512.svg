@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#123B2A" />
+      <stop offset="100%" stop-color="#0B2319" />
+    </linearGradient>
+    <linearGradient id="sunGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066" />
+      <stop offset="100%" stop-color="#F7C948" />
+    </linearGradient>
+    <linearGradient id="panelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2F7D4F" />
+      <stop offset="100%" stop-color="#194D31" />
+    </linearGradient>
+    <linearGradient id="cropGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8FCF64" />
+      <stop offset="100%" stop-color="#2F7D4F" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)" />
+  <rect width="504" height="504" x="4" y="4" rx="108" fill="none" stroke="#2F7D4F" stroke-width="4" opacity="0.4" />
+
+  <!-- Sun Rays & Sun -->
+  <g transform="translate(360, 140)">
+    <circle cx="0" cy="0" r="64" fill="url(#sunGrad)" filter="url(#glow)" />
+    <!-- Rays -->
+    <path d="M0 -84 L0 -72 M0 72 L0 84 M-84 0 L-72 0 M72 0 L84 0 M-59 -59 L-50 -50 M50 50 L59 59 M-59 59 L-50 50 M50 -50 L59 -59"
+          stroke="#F7C948" stroke-width="6" stroke-linecap="round" opacity="0.8" />
+  </g>
+
+  <!-- Ground Line -->
+  <line x1="64" y1="420" x2="448" y2="420" stroke="#8FCF64" stroke-width="6" stroke-linecap="round" opacity="0.5" />
+
+  <!-- Agri-Voltaic Solar Panel Structure -->
+  <!-- Left Stilt -->
+  <line x1="160" y1="260" x2="160" y2="420" stroke="#9ED4EC" stroke-width="8" stroke-linecap="round" />
+  <!-- Right Stilt -->
+  <line x1="280" y1="210" x2="280" y2="420" stroke="#9ED4EC" stroke-width="8" stroke-linecap="round" />
+  <!-- Cross Bracing -->
+  <line x1="160" y1="360" x2="280" y2="280" stroke="#9ED4EC" stroke-width="3" stroke-linecap="round" opacity="0.5" />
+  <line x1="160" y1="280" x2="280" y2="360" stroke="#9ED4EC" stroke-width="3" stroke-linecap="round" opacity="0.5" />
+
+  <!-- Angled Solar Panel Array -->
+  <g transform="translate(220, 230) rotate(-28)">
+    <!-- Main Frame -->
+    <rect x="-140" y="-36" width="280" height="72" rx="8" fill="#102638" stroke="#9ED4EC" stroke-width="5" />
+    <!-- Cells -->
+    <rect x="-130" y="-28" width="56" height="56" rx="4" fill="#184363" />
+    <rect x="-66" y="-28" width="56" height="56" rx="4" fill="#184363" />
+    <rect x="-2" y="-28" width="56" height="56" rx="4" fill="#184363" />
+    <rect x="62" y="-28" width="56" height="56" rx="4" fill="#184363" />
+    <!-- Grid Lines -->
+    <line x1="-102" y1="-28" x2="-102" y2="28" stroke="#9ED4EC" stroke-width="1.5" opacity="0.7" />
+    <line x1="-38" y1="-28" x2="-38" y2="28" stroke="#9ED4EC" stroke-width="1.5" opacity="0.7" />
+    <line x1="26" y1="-28" x2="26" y2="28" stroke="#9ED4EC" stroke-width="1.5" opacity="0.7" />
+    <line x1="90" y1="-28" x2="90" y2="28" stroke="#9ED4EC" stroke-width="1.5" opacity="0.7" />
+  </g>
+
+  <!-- Filtered Sunbeam -->
+  <polygon points="120,290 280,240 340,420 180,420" fill="#F7C948" opacity="0.12" />
+
+  <!-- Growing Crops Beneath Panels -->
+  <!-- Plant 1 -->
+  <g transform="translate(140, 420)">
+    <path d="M0 0 Q-15 -35 -30 -50 Q-10 -40 0 -20 Q10 -40 30 -50 Q15 -35 0 0" fill="url(#cropGrad)" />
+    <circle cx="0" cy="-22" r="5" fill="#8FCF64" />
+  </g>
+
+  <!-- Plant 2 -->
+  <g transform="translate(220, 420)">
+    <path d="M0 0 Q-20 -50 -40 -70 Q-15 -55 0 -25 Q15 -55 40 -70 Q20 -50 0 0" fill="url(#cropGrad)" />
+    <circle cx="-12" cy="-40" r="7" fill="#E24A4A" /> <!-- Ripe tomato under panel -->
+    <circle cx="10" cy="-32" r="6" fill="#E24A4A" />
+  </g>
+
+  <!-- Plant 3 -->
+  <g transform="translate(300, 420)">
+    <path d="M0 0 Q-18 -45 -35 -60 Q-12 -48 0 -22 Q12 -48 35 -60 Q18 -45 0 0" fill="url(#cropGrad)" />
+    <circle cx="8" cy="-35" r="6.5" fill="#E24A4A" />
+  </g>
+
+  <!-- Balance Scale Symbol / Emblem -->
+  <g transform="translate(80, 110)">
+    <circle cx="0" cy="0" r="28" fill="#123B2A" stroke="#F7C948" stroke-width="3" />
+    <text x="0" y="9" font-family="sans-serif" font-size="24" font-weight="bold" fill="#F7C948" text-anchor="middle">⚖️</text>
+  </g>
+</svg>
