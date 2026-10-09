@@ -38,6 +38,9 @@ export function renderAlertsViewHTML(filterStatus = 'all') {
         </div>
 
         <div class="alerts-hero-right">
+          <button id="btn-alerts-voice-test" class="btn btn-xs btn-accent" style="margin-bottom: 0.5rem;" title="Test Multilingual Emergency Voice Broadcast">
+            🔊 Test Voice Alert
+          </button>
           <div class="alert-filter-pills">
             <button class="btn btn-xs ${filterStatus === 'all' ? 'btn-primary' : 'btn-outline'} btn-alert-filter" data-filter="all">All (${alerts.length})</button>
             <button class="btn btn-xs ${filterStatus === 'unresolved' ? 'btn-primary' : 'btn-outline'} btn-alert-filter" data-filter="unresolved">Unresolved (${unresolvedCount})</button>

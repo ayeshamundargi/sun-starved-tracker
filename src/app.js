@@ -89,6 +89,14 @@ import {
   promptReauth,
   DEMO_FARMER
 } from './services/auth.js';
+import {
+  initVoiceAssistant,
+  openVoiceAssistant,
+  toggleVoiceAssistant,
+  setVoiceAssistantView,
+  triggerVoiceAlert,
+  readCurrentScreen
+} from './services/voiceAssistant.js';
 
 // Global Application State
 const state = {
@@ -169,6 +177,9 @@ async function init() {
   setupSecurityAndIot();
   registerPWA();
 
+  // Initialize Kisan Vani AI Multilingual Voice Assistant
+  initVoiceAssistant(state.activeView);
+
   // Route initial view
   handleRouting();
   window.addEventListener('hashchange', handleRouting);
@@ -217,6 +228,7 @@ function executeOptimizer() {
 function handleRouting() {
   const hash = window.location.hash.replace('#', '') || 'home';
   state.activeView = hash;
+  setVoiceAssistantView(hash);
 
   // Update navigation classes
   document.querySelectorAll('.nav-link, .bottom-nav-item').forEach(el => {
@@ -2503,6 +2515,14 @@ function setupNavigation() {
       openSimpleGuideModal();
     });
   }
+
+  // Kisan Vani AI Voice Assistant buttons
+  document.getElementById('btn-header-voice')?.addEventListener('click', () => {
+    toggleVoiceAssistant();
+  });
+  document.getElementById('nav-link-voice')?.addEventListener('click', () => {
+    openVoiceAssistant();
+  });
 }
 
 function registerPWA() {
@@ -3228,6 +3248,10 @@ function bindAlertsEvents() {
       renderCurrentView();
     });
   });
+
+  document.getElementById('btn-alerts-voice-test')?.addEventListener('click', () => {
+    triggerVoiceAlert('test');
+  });
 }
 
 // ------------------------------------------------------------
@@ -3271,18 +3295,21 @@ function bindSchedulerEvents() {
 function bindSimulatorEvents() {
   document.getElementById('sim-btn-low-battery')?.addEventListener('click', () => {
     simulateBatteryLow20();
+    triggerVoiceAlert('battery');
     showToast('🚨 Low Battery Rule (≤20%) Triggered! Load shedding engaged.');
     renderCurrentView();
   });
 
   document.getElementById('sim-btn-rain')?.addEventListener('click', () => {
     simulateRainDetection(14.5);
+    triggerVoiceAlert('rain');
     showToast('🌧️ Rain Event (14.5mm) Injected! Auto-actuating to runoff angle.');
     renderCurrentView();
   });
 
   document.getElementById('sim-btn-wind')?.addEventListener('click', () => {
     simulateHighWindGust(52.0);
+    triggerVoiceAlert('wind');
     showToast('🌪️ High Wind Gust (52 km/h) Injected! Emergency flat stow (0°) active.');
     renderCurrentView();
   });
