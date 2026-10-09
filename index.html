@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#123B2A" />
+  <meta name="description" content="AI-assisted agri-voltaic decision-support platform. Find the sweet spot between sunlight for crops and power from solar panels." />
+  
+  <title>SUN-STARVED TRACKER — Agri-Voltaics Optimizer</title>
+  
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" href="./icon-192.svg" />
+
+  <!-- Google Fonts: Plus Jakarta Sans for modern agricultural tech typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet CSS for maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <script type="module" crossorigin src="./assets/index-DHCpjZMK.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Cvalr0WD.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Top Bar / App Header -->
+    <header class="app-header">
+      <div class="header-inner">
+        <a href="#home" class="brand-group" id="brand-link">
+          <div class="brand-icon">🌞</div>
+          <div class="brand-text">
+            <span class="brand-title" data-i18n="appTitle">SUN-STARVED TRACKER</span>
+            <span class="brand-subtitle" data-i18n="tagline">Agri-Voltaics Optimizer</span>
+          </div>
+        </a>
+
+        <div class="header-actions">
+          <button id="btn-header-voice" class="btn btn-sm btn-primary pulse-on-speak" title="Kisan Vani AI Voice Assistant (Press V)">
+            🎙️ <span class="hide-mobile" data-i18n="btnVoiceAssistant">Kisan Vani AI</span>
+          </button>
+          <button id="btn-open-support" class="btn btn-sm btn-accent" title="24/7 Kisan Customer Care & Help">
+            🎧 <span class="hide-mobile" data-i18n="btnCustomerCare">Customer Care</span>
+          </button>
+          <button id="btn-open-security" class="btn btn-sm btn-outline" title="Farmer Profile & Security Authentication">
+            🔒 <span class="hide-mobile" id="header-farmer-name">Ramesh K. (AGRI-84920)</span>
+          </button>
+          <button id="btn-open-guide" class="btn btn-sm btn-secondary" title="How It Works - Simple Guide">
+            ❓ <span class="hide-mobile" data-i18n="btnGuide">Simple Guide</span>
+          </button>
+          <button id="btn-toggle-presentation" class="btn btn-sm btn-secondary" title="Hackathon Presentation Tour">
+            🎤 <span class="hide-mobile" data-i18n="btnPresentation">Presentation Tour</span>
+          </button>
+          
+          <!-- Language Selector (6 Languages) -->
+          <select id="lang-selector" class="lang-select" aria-label="Select Interface Language">
+            <option value="en">🇬🇧 English</option>
+            <option value="hi">🇮🇳 हिन्दी</option>
+            <option value="kn">🇮🇳 ಕನ್ನಡ</option>
+            <option value="ta">🇮🇳 தமிழ்</option>
+            <option value="te">🇮🇳 తెలుగు</option>
+            <option value="mr">🇮🇳 मराठी</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <!-- Presentation Mode Banner (Toggleable) -->
+    <div id="presentation-banner" class="presentation-bar" style="display: none;">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <span>🎤 <span data-i18n="btnPresentation">PRESENTATION TOUR</span></span>
+        <span id="pres-step-name" class="pres-step-badge">1. Farm Profile</span>
+      </div>
+      <div style="display:flex; gap:0.5rem;">
+        <button id="btn-pres-prev" class="btn btn-sm btn-secondary" data-i18n="btnBack">Prev</button>
+        <button id="btn-pres-next" class="btn btn-sm btn-accent" data-i18n="btnNext">Next Step ➔</button>
+        <button id="btn-reset-demo" class="btn btn-sm btn-secondary" title="Reset to default demo data" data-i18n="btnResetDemo">Reset Demo</button>
+        <button id="btn-close-presentation" class="btn btn-sm btn-secondary">✕</button>
+      </div>
+    </div>
+
+    <!-- Network & Sync Status Banner -->
+    <div id="sync-banner" class="sync-banner online">
+      <span id="sync-status-icon">🟢</span>
+      <span id="sync-status-text" data-i18n="syncOnline">ONLINE — LIVE DATA ACTIVE</span>
+    </div>
+
+    <!-- Main Application Layout -->
+    <div class="main-wrapper">
+      <!-- Desktop Left Sidebar Navigation -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <a href="#home" class="nav-link active" data-view="home">
+          <span class="nav-icon">🏠</span> <span class="nav-text" data-i18n="navHome">Home</span>
+        </a>
+        <a href="#dashboard" class="nav-link" data-view="dashboard">
+          <span class="nav-icon">⚡</span> <span class="nav-text" data-i18n="navDashboard">IoT Dashboard</span>
+        </a>
+        <a href="#camera" class="nav-link" data-view="camera">
+          <span class="nav-icon">📷</span> <span class="nav-text" data-i18n="navCamera">Crop Camera (3x)</span>
+        </a>
+        <a href="#energy" class="nav-link" data-view="energy">
+          <span class="nav-icon">🔋</span> <span class="nav-text" data-i18n="navEnergy">Energy & Battery</span>
+        </a>
+        <a href="#positioning" class="nav-link" data-view="positioning">
+          <span class="nav-icon">📐</span> <span class="nav-text" data-i18n="navPositioning">Panel Positioning</span>
+        </a>
+        <a href="#optimize" class="nav-link" data-view="optimize">
+          <span class="nav-icon">🤖</span> <span class="nav-text" data-i18n="navOptimize">AI Optimize</span>
+        </a>
+        <a href="#alerts" class="nav-link" data-view="alerts">
+          <span class="nav-icon">🚨</span> <span class="nav-text" data-i18n="navAlerts">Alerts & Incidents</span>
+        </a>
+        <a href="#scheduler" class="nav-link" data-view="scheduler">
+          <span class="nav-icon">⏱️</span> <span class="nav-text" data-i18n="navScheduler">Sensor Scheduler</span>
+        </a>
+        <a href="#simulator" class="nav-link" data-view="simulator">
+          <span class="nav-icon">🎮</span> <span class="nav-text" data-i18n="navSimulator">System Simulator</span>
+        </a>
+        <a href="#reports" class="nav-link" data-view="reports">
+          <span class="nav-icon">📄</span> <span class="nav-text" data-i18n="navReports">Farm Reports</span>
+        </a>
+        <a href="#support" class="nav-link" data-view="support">
+          <span class="nav-icon">🎧</span> <span class="nav-text" data-i18n="navSupport">Customer Care & Feedback</span>
+        </a>
+        <a href="javascript:void(0)" class="nav-link" id="nav-link-voice">
+          <span class="nav-icon">🎙️</span> <span class="nav-text" data-i18n="btnVoiceAssistant">Kisan Vani AI</span>
+        </a>
+        <a href="#security" class="nav-link" data-view="security">
+          <span class="nav-icon">🔒</span> <span class="nav-text" data-i18n="navSecurity">Security & ID</span>
+        </a>
+        <a href="#farms" class="nav-link" data-view="farms">
+          <span class="nav-icon">🌾</span> <span class="nav-text" data-i18n="navFarms">My Farms</span>
+        </a>
+      </nav>
+
+      <!-- Main Dynamic Content Area -->
+      <main class="content-area" id="main-content">
+        <!-- Rendered dynamically by app.js based on route -->
+      </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation (min 44px touch targets) -->
+    <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+      <a href="#home" class="bottom-nav-item active" data-view="home">
+        <span class="b-icon">🏠</span>
+        <span class="b-label" data-i18n="navHome">Home</span>
+      </a>
+      <a href="#dashboard" class="bottom-nav-item" data-view="dashboard">
+        <span class="b-icon">⚡</span>
+        <span class="b-label" data-i18n="navDashboard">IoT Dash</span>
+      </a>
+      <a href="#camera" class="bottom-nav-item" data-view="camera">
+        <span class="b-icon">📷</span>
+        <span class="b-label" data-i18n="navCamera">Camera</span>
+      </a>
+      <a href="#support" class="bottom-nav-item" data-view="support">
+        <span class="b-icon">🎧</span>
+        <span class="b-label" data-i18n="navCare">Care</span>
+      </a>
+      <a href="#simulator" class="bottom-nav-item" data-view="simulator">
+        <span class="b-icon">🎮</span>
+        <span class="b-label" data-i18n="navSimulator">Simulator</span>
+      </a>
+      <a href="#security" class="bottom-nav-item" data-view="security">
+        <span class="b-icon">🔒</span>
+        <span class="b-label" data-i18n="navSecurity">Security</span>
+      </a>
+    </nav>
+
+    <!-- Global Modal Container for Reports, Farm Editing, Confirmations -->
+    <div id="modal-container" class="modal-overlay">
+      <div class="modal-dialog" id="modal-content">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
+    <!-- Global Toast Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+  </div>
+
+  <!-- Main JavaScript Bundle Entrypoint -->
+</body>
+</html>
